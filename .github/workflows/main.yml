@@ -1,14 +1,25 @@
 name: upload to Kattis
 on: [push]
+env:
+  PROBLEM_ID:
 jobs:
   Upload-to-Kattis:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
         uses: actions/checkout@v3
+        with: 
+          fetch-depth: 0
       - name: Set up Python
         uses: actions/setup-python@v2
-      - name: run python 
+        
+      - name: files
+        uses: jitterbit/get-changed-files@v1
+        with:
+          format: 'csv'
+      - name: print
         run: |
-          ls
-          python3 ../scripts/test.py
+          mapfile -d ',' -t added_modified_files < <(printf '%s,' '${{ steps.files.outputs.added_modified }}')
+          for added_modified_file in "${added_modified_files[@]}"; do
+            echo "Do something with this ${added_modified_file}."
+          done
