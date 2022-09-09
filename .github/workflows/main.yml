@@ -1,0 +1,9 @@
+name: upload to Kattis
+on: [push]
+jobs:
+  Upload-to-Kattis:
+    runs-on: ubuntu-latest
+    steps:
+      - name: run python 
+        run: |
+          python3 ../scripts/test.py
