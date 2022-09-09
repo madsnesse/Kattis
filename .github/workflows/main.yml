@@ -6,6 +6,9 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v2
       - name: run python 
         run: |
+          ls
           python3 ../scripts/test.py
