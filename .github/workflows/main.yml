@@ -4,6 +4,8 @@ jobs:
   Upload-to-Kattis:
     runs-on: ubuntu-latest
     steps:
+      - name: checkout
+        uses: actions/checkout@v3
       - name: run python 
         run: |
           python3 ../scripts/test.py
