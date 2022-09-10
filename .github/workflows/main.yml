@@ -1,7 +1,7 @@
 name: upload to Kattis
 on: [push]
 env:
-  PROBLEM_ID:
+  SUPPORTED_EXTENSIONS: [".py", ".java"]
 jobs:
   Upload-to-Kattis:
     runs-on: ubuntu-latest
@@ -10,21 +10,16 @@ jobs:
         uses: actions/checkout@v3
       - name: Set up Python
         uses: actions/setup-python@v2
-        
-      - name: files
+      - id: files
         uses: jitterbit/get-changed-files@v1
         with:
           format: 'csv'
-      - name: print
-        run: |
-          echo '${{ steps.files.outputs.added_modified }}'
-          mapfile -d ',' -t added_modified_files < <(printf '%s,' '${{ steps.files.outputs.added_modified }}')
-          for added_modified_file in "${added_modified_files[@]}"; do
-            echo "Do something with this ${added_modified_file}."
-          done
-      - id: files
-        uses: jitterbit/get-changed-files@v1
       - run: |
           for changed_file in ${{ steps.files.outputs.all }}; do
             echo "Do something with this ${changed_file}."
+            allowed_extensions = ['.c','.c++','.cc','.c#','.cpp','.cs','.cxx','.cbl','.cob','.cpy','.fs','.go','.h','.hs','.java','.js','.kt','.lisp','.cl','.m','.ml','.pas','.php','.pl','.rb','.rs','.scala','.f90','.f','.for']
+            read -a strarr <<<"${changed_file}"
+            if [[ " ${allowed_extensions[*]} " =~ " strarr[-1] " ]]; then
+              echo strarr[-1]
+              python3 .github/scripts/submit.py ${changed_file} -u ${{secrets.KATTIS_USERNAME}} -k ${{secrets.KATTIS_TOKEN}}
           done
