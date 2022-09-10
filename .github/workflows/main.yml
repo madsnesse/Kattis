@@ -19,5 +19,6 @@ jobs:
           for changed_file in ${{ steps.files.outputs.all }}; do
             
             echo "Do something with this ${changed_file}"
+            echo "${{secrets.KATTIS_USERNAME}}"
             python3 .github/scripts/submit.py ${changed_file} -u ${{secrets.KATTIS_USERNAME}} -k ${{secrets.KATTIS_TOKEN}}
           done
