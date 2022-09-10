@@ -13,8 +13,8 @@ jobs:
         with:
           format: 'csv'
       - run: |
-          for changed_file in ${{ steps.files.outputs.all }}; do
-            echo "Do something with this ${changed_file}"
-            ls
-            python3 /.github/scripts/submit.py ${changed_file} -u ${{secrets.KATTIS_USERNAME}} -k ${{secrets.KATTIS_TOKEN}}
+          valid = python3 /.github/scripts/get_valid_files.py ${{ steps.files.outputs.all }}
+          for valid_file in $valid; do
+            echo "Do something with this ${valid_file}"
+            #python3 /.github/scripts/submit.py ${changed_file} -u ${{secrets.KATTIS_USERNAME}} -k ${{secrets.KATTIS_TOKEN}}
           done
