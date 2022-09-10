@@ -1,7 +1,5 @@
 name: upload to Kattis
 on: [push]
-env:
-  SUPPORTED_EXTENSIONS: [".py", ".java"]
 jobs:
   Upload-to-Kattis:
     runs-on: ubuntu-latest
@@ -17,9 +15,5 @@ jobs:
       - run: |
           for changed_file in ${{ steps.files.outputs.all }}; do
             echo "Do something with this ${changed_file}."
-            allowed_extensions = ['.c','.c++','.cc','.c#','.cpp','.cs','.cxx','.cbl','.cob','.cpy','.fs','.go','.h','.hs','.java','.js','.kt','.lisp','.cl','.m','.ml','.pas','.php','.pl','.rb','.rs','.scala','.f90','.f','.for']
-            read -a strarr <<<"${changed_file}"
-            if [[ " ${allowed_extensions[*]} " =~ " strarr[-1] " ]]; then
-              echo strarr[-1]
-              python3 .github/scripts/submit.py ${changed_file} -u ${{secrets.KATTIS_USERNAME}} -k ${{secrets.KATTIS_TOKEN}}
+            python3 .github/scripts/submit.py ${changed_file} -u ${{secrets.KATTIS_USERNAME}} -k ${{secrets.KATTIS_TOKEN}}
           done
